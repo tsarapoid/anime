@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>anime interface</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <!--
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+-->
+</head>
+<style>
+button {
+  color: black;
+  background-color: white;
+  /* Gray */
+  border: none;
+  padding: 10px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 32px;
+  cursor: pointer;
+}
+
+
+button:hover {
+  background-color: #e7e7e7;
+}
+</style>
+
+<body>
+  <h3 id="main-heading">Dynamic string extender with character "recognition"</h1>
+
+<div id="separatorOne">All the text below has been created dynamically</div>
+
+<div id="divisionOne" style="font-size: 128px; color: blue">
+  <span id="childSpan"> </span>
+</div>
+<script>
+
+// const animeString = "Please provide anime string";
+
+var animeString = ""
+while (animeString === "") {
+  animeString = prompt("Please provide anime string");
+}
+stringGeneration();
+
+function stringGeneration() {
+console.log("Entered String = "+animeString);
+console.log("String Length = "+animeString.length);
+  for (var i = 0; i < animeString.length; i++) {
+    console.log("Character #"+i+" = "+animeString[i]);
+    var newButton = document.createElement("button"); 
+//  Individual IDs for the buttons
+    newButton.setAttribute("id", i);
+//  The function charSelect() triggered when the mouse pointer hovers over the button
+    newButton.setAttribute("onmouseover", "charSelect(this)");
+//  The function charUnSelect() triggered when the mouse pointer hovers away from the button
+    newButton.setAttribute("onmouseout", "charUnSelect(this)");
+    var newContent = document.createTextNode(animeString[i]);
+//  Button render
+    newButton.appendChild(newContent);
+//  Inserts button element before <div id="divisionOne">
+    var currentDiv = document.getElementById("divisionOne");
+    document.body.insertBefore(newButton, currentDiv); 
+  }
+}
+
+
+function charSelect(x) {
+//  Button ID return
+    console.log("Button Hover ID = "+x.id);
+//  Button text color change
+  x.style.color = "blue";
+/*
+//  Button text color revert after delay
+    setTimeout(function() {
+      x.style.color = "black";
+    }, 300);
+*/
+// create an empty element node
+// without an ID, any attributes, or any content
+  var newSpan = document.createElement("span");
+// give it an id attribute called 'newSpan'
+  newSpan.id = "childSpan";
+// create some content for the new element.
+  var charString = document.createTextNode(animeString[x.id]);
+  console.log("Character Check = "+animeString[x.id]);
+// apply that content to the new element
+  newSpan.appendChild(charString);
+// build a reference to the existing node to be replaced
+  var oldSpan = document.getElementById("childSpan");
+  var parentDiv = oldSpan.parentNode;
+// replace existing node oldSpan with the new span element newSpan
+  parentDiv.replaceChild(newSpan, oldSpan);
+// span ID preserved, result:
+// <div>
+//   <span id="childSpan">Char</span>
+// </div>
+}
+
+
+function charUnSelect(x) {
+    console.log("Button "+x.id+" Unpositioned");
+//  Button text color reverted
+  x.style.color = "black";
+}
+
+</script>
+
+</body>
+</html>
